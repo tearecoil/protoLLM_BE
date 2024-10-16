@@ -1,0 +1,62 @@
+from typing import Union, Annotated
+from PyPDF2 import PdfReader
+from fastapi import FastAPI, File, UploadFile
+from main_functions import read_pdf, ask_query
+from models.query import query
+from pydantic import BaseModel
+from langchain_community.vectorstores import FAISS
+
+
+import PyPDF2
+
+app = FastAPI()
+knowledge_base: FAISS
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}
+
+@app.post("/uploadfile")
+async def upload(file: UploadFile = File(...)):
+    global knowledge_base
+    try:
+        # print(file.filename)
+        # print(file.size)
+        contents = file.file.read()
+        # print(1)
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+            # print(f)
+        # print(2)
+        knowledge_base = await read_pdf.readPDF(file)
+        print("FROM MAIN")
+        print(knowledge_base)
+        # read_pdf.readPDF(file)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        file.file.close()
+    # return {"message": f"Successfully uploaded {file.filename}"}
+    return {"message": f"Successfully uploaded"}
+
+@app.post("/askquery")
+def sendquery(sendquery: query):
+    global knowledge_base
+    print("FROM ASK QUERY")
+    print(knowledge_base)
+    if knowledge_base:
+        print(1)
+        response = ask_query.ask_query(knowledge_base, sendquery)
+        print (response)
+        return {"message": response}
+        # print(sendquery)
+        # print(sendquery.name)
+        # print(sendquery.data)
+    else:
+        print("null knowledge base")
+    
