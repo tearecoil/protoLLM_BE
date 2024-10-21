@@ -18,7 +18,6 @@ def ask_query(knowledgeBase: FAISS, query: query):
     with get_openai_callback() as cost:
         response = chain.invoke(input={"question": sent_query, 
                                      "input_documents": docs})
-        print(response)
         print(cost)
         print("-------------------------------------------------------------------------")
         print(response["output_text"])
