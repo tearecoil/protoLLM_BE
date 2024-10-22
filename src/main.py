@@ -69,4 +69,9 @@ def sendquery(sendquery: query):
         # print(sendquery.data)
     else:
         print("null knowledge base")
-    
+
+@app.post("/multifile")
+async def multifille(files: list[UploadFile]):
+    for file in files:
+        print(len(file))
+    return{"state": 200} 
