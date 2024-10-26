@@ -15,12 +15,15 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 storage = firebase.storage()
 
 def sendPDF(username: str, filename: str):
-    print(username)
-    print(filename)
+    # print(username)
+    # print(filename)
     linkcreate = username + '/' + filename
-    print(linkcreate)
+    rootlink = username + '/'
+    # print(linkcreate)
     # file = input("Enter file name:")
     #change cloudfilename to senders' ID
     # cloudfilename = input("Enter cloud file name:")
     storage.child(linkcreate).put(filename)
-
+    # print(storage.child(username).get_url())
+    # print("here")
+    # print(storage.list_files(username))

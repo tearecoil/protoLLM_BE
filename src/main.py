@@ -27,13 +27,13 @@ def read_item(item_id: int, q: Union[str, None] = None):
 def set_username(user: current_user):
     global cur_user
     cur_user = user
-    print(cur_user)
+    # print(cur_user)
  
 @app.post("/uploadfile")
 async def upload(file: UploadFile = File(...)):
     global knowledge_base
     try:
-        print(file.filename)
+        # print(file.filename)
         # print(file.size)
         contents = file.file.read()
         # print(1)
@@ -42,8 +42,8 @@ async def upload(file: UploadFile = File(...)):
             # print(f)
         # print(2)
         knowledge_base = await read_pdf.readPDF(file)
-        print("FROM MAIN")
-        print(knowledge_base)
+        # print("FROM MAIN")
+        # print(knowledge_base)
         # read_pdf.readPDF(file)
         #Save the file to Firebase
         storage_backend.sendPDF(cur_user.name, file.filename)
