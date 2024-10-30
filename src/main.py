@@ -2,7 +2,7 @@ from typing import Union, Annotated
 from PyPDF2 import PdfReader
 from fastapi import FastAPI, File, UploadFile
 from main_functions import read_pdf, ask_query
-from services import storage_backend
+# from services import storage_backend
 from models.query import query
 from models.current_user import current_user
 from pydantic import BaseModel
@@ -23,12 +23,6 @@ def read_root():
 def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
-@app.post("/setuser")
-def set_username(user: current_user):
-    global cur_user
-    cur_user = user
-    # print(cur_user)
- 
 @app.post("/uploadfile")
 async def upload(file: UploadFile = File(...)):
     global knowledge_base
@@ -46,7 +40,7 @@ async def upload(file: UploadFile = File(...)):
         # print(knowledge_base)
         # read_pdf.readPDF(file)
         #Save the file to Firebase
-        storage_backend.sendPDF(cur_user.name, file.filename)
+        # storage_backend.sendPDF(cur_user.name, file.filename)
     except Exception:
         return {"message": "There was an error uploading the file"}
     finally:

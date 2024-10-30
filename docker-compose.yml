@@ -22,7 +22,7 @@ services:
   web:
     build: 
       context: .
-    command: fastapi run
+    command: fastapi run src/main.py
     volumes:
       - .:/app
     ports:
